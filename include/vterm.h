@@ -122,8 +122,10 @@ typedef enum {
 
 /**
  * Tagged union storing either an RGB color or an index into a colour palette.
- * Use the vterm_state_get_rgb_color() function to convert an indexed colour
- * into the internally stored RGB color.
+ * In order to convert indexed colours to RGB, you may use the
+ * vterm_state_convert_color_to_rgb() or vterm_screen_convert_color_to_rgb()
+ * functions which lookup the RGB colour from the palette maintained by a
+ * VTermState or VTermScreen instance.
  */
 typedef union {
   /**
@@ -135,8 +137,7 @@ typedef union {
   uint8_t type;
 
   /**
-   * If `VTERM_COLOR_IS_RGB(type) is true, this member holds the actual R, G, B
-   * colour values describing the user-supplied 24-bit colour.
+   * Valid if `VTERM_COLOR_IS_RGB(type)` is true. Holds the RGB colour values.
    */
   struct {
     /**
@@ -152,8 +153,7 @@ typedef union {
 
   /**
    * If `VTERM_COLOR_IS_INDEXED(type)` is true, this member holds the index into
-   * the colour paletted as well as additional meta-information about the
-   * colour.
+   * the colour palette.
    */
   struct {
     /**
@@ -169,7 +169,7 @@ typedef union {
 } VTermColor;
 
 /**
- * Constructs a new VTermColor instance containing the given RGB color.
+ * Constructs a new VTermColor instance representing the given RGB values.
  */
 static inline void vterm_color_rgb(VTermColor *col, uint8_t red, uint8_t green,
                                    uint8_t blue)
@@ -181,11 +181,8 @@ static inline void vterm_color_rgb(VTermColor *col, uint8_t red, uint8_t green,
 }
 
 /**
- * Construct a new VTermColor instance containing the given indexed color.
- *
- * @param col is a pointer at the VTermColor instance to which the given
- * information will be written.
- * @param idx is the index that should be written to the VTermColor instance.
+ * Construct a new VTermColor instance representing an indexed color with the
+ * given index.
  */
 static inline void vterm_color_indexed(VTermColor *col, uint8_t idx)
 {
@@ -387,9 +384,9 @@ void vterm_state_focus_out(VTermState *state);
 const VTermLineInfo *vterm_state_get_lineinfo(const VTermState *state, int row);
 
 /**
- * Makes sure that the given color `col` is indeed an RGB colour. When this
- * function returns the test VTERM_COLOR_IS_RGB(col) will return true. Note that
- * any other flags stored in `type` will be reset.
+ * Makes sure that the given color `col` is indeed an RGB colour. After this
+ * function returns, VTERM_COLOR_IS_RGB(col) will return true, while all other
+ * flags stored in `col->type` will have been reset.
  *
  * @param state is the VTermState instance from which the colour palette should
  * be extracted.
@@ -483,7 +480,7 @@ int vterm_screen_get_cell(const VTermScreen *screen, VTermPos pos, VTermScreenCe
 int vterm_screen_is_eol(const VTermScreen *screen, VTermPos pos);
 
 /**
- * Same as vterm_state_get_rgb_color() but takes a screen instead of a state
+ * Same as vterm_state_convert_color_to_rgb(), but takes a `screen` instead of a `state`
  * instance.
  */
 void vterm_screen_convert_color_to_rgb(const VTermScreen *screen, VTermColor *col);
