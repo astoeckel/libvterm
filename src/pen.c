@@ -201,7 +201,7 @@ INTERNAL void vterm_state_savepen(VTermState *state, int save)
   }
 }
 
-int vterm_color_equal(const VTermColor *a, const VTermColor *b)
+int vterm_color_is_equal(const VTermColor *a, const VTermColor *b)
 {
   /* First make sure that the two colours are of the same type (RGB/Indexed) */
   if (a->type != b->type) {
@@ -249,7 +249,7 @@ void vterm_state_set_palette_color(VTermState *state, int index, const VTermColo
     state->colors[index] = *col;
 }
 
-void vterm_state_get_rgb_color(const VTermState *state, VTermColor *col) {
+void vterm_state_convert_color_to_rgb(const VTermState *state, VTermColor *col) {
   if (VTERM_COLOR_IS_INDEXED(col)) { /* Convert indexed colors to RGB */
     lookup_colour_palette(state, col->indexed.idx, col);
   }

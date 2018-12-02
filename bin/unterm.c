@@ -102,11 +102,11 @@ static void dump_cell(const VTermScreenCell *cell, const VTermScreenCell *prevce
         if(prevcell->attrs.font && !cell->attrs.font)
           sgr[sgri++] = 10;
 
-        if(!vterm_color_equal(&prevcell->fg, &cell->fg)) {
+        if(!vterm_color_is_equal(&prevcell->fg, &cell->fg)) {
           sgri = dump_cell_color(&cell->fg, sgri, sgr, 1);
         }
 
-        if(!vterm_color_equal(&prevcell->bg, &cell->bg)) {
+        if(!vterm_color_is_equal(&prevcell->bg, &cell->bg)) {
           sgri = dump_cell_color(&cell->bg, sgri, sgr, 0);
         }
 

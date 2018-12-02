@@ -196,7 +196,7 @@ static inline void vterm_color_indexed(VTermColor *col, uint8_t idx)
 /**
  * Compares two colours. Returns true if the colors are equal, false otherwise.
  */
-int vterm_color_equal(const VTermColor *a, const VTermColor *b);
+int vterm_color_is_equal(const VTermColor *a, const VTermColor *b);
 
 typedef enum {
   /* VTERM_VALUETYPE_NONE = 0 */
@@ -396,7 +396,7 @@ const VTermLineInfo *vterm_state_get_lineinfo(const VTermState *state, int row);
  * @param col is a pointer at the VTermColor instance that should be converted
  * to an RGB colour.
  */
-void vterm_state_get_rgb_color(const VTermState *state, VTermColor *col);
+void vterm_state_convert_color_to_rgb(const VTermState *state, VTermColor *col);
 
 // ------------
 // Screen layer
@@ -486,7 +486,7 @@ int vterm_screen_is_eol(const VTermScreen *screen, VTermPos pos);
  * Same as vterm_state_get_rgb_color() but takes a screen instead of a state
  * instance.
  */
-void vterm_screen_get_rgb_color(const VTermScreen *screen, VTermColor *col);
+void vterm_screen_convert_color_to_rgb(const VTermScreen *screen, VTermColor *col);
 
 // ---------
 // Utilities

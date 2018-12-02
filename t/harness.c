@@ -865,10 +865,10 @@ int main(int argc, char **argv)
         if(cell.attrs.dwl)       printf("dwl ");
         if(cell.attrs.dhl)       printf("dhl-%s ", cell.attrs.dhl == 2 ? "bottom" : "top");
         printf("fg=");
-        vterm_screen_get_rgb_color(screen, &cell.fg);
+        vterm_screen_convert_color_to_rgb(screen, &cell.fg);
         print_color(&cell.fg);
         printf(" bg=");
-        vterm_screen_get_rgb_color(screen, &cell.bg);
+        vterm_screen_convert_color_to_rgb(screen, &cell.bg);
         print_color(&cell.bg);
         printf("\n");
       }
